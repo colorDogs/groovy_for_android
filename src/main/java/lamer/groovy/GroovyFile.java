@@ -1,7 +1,11 @@
 package lamer.groovy;
 
+import android.text.TextUtils;
+
 import java.io.File;
 import java.util.List;
+
+import lamer.groovy.utils.FileIOUtils;
 
 /**
  * Created by chaos on 2018/7/26 17:08
@@ -9,6 +13,100 @@ import java.util.List;
  * mail: 157688302@qq.com
  */
 public class GroovyFile {
+
+    private static final boolean NOT_USE_CACHED = false;
+
+    private String mPath;
+    private Cached mCached;
+
+    public GroovyFile(String path) {
+        this.mPath = path;
+    }
+
+    public boolean isExists() {
+        return isExists(new File(mPath));
+    }
+
+    public String text(boolean useCached) {
+        if (!isExists()) {
+            return null;
+        } else {
+            return getCacheOrWait(mPath, useCached).text;
+        }
+    }
+
+    public String text() {
+        return text(NOT_USE_CACHED);
+    }
+
+    public byte[] bytes(boolean useCached) {
+        if (!isExists()) {
+            return null;
+        } else {
+            return getCacheOrWait(mPath, useCached).bytes;
+        }
+    }
+
+    public byte[] bytes() {
+        return bytes(NOT_USE_CACHED);
+    }
+
+    public synchronized boolean setText(String text) {
+        return FileIOUtils.writeFileFromString(mPath, text);
+    }
+
+    public synchronized boolean setBytes(byte[] bytes) {
+        return FileIOUtils.writeFileFromBytesByStream(mPath, bytes);
+    }
+
+    public void eachLine(GroovyArray.ArrayEach<String> text) {
+        eachLine(text, NOT_USE_CACHED);
+    }
+
+    public void eachLine(GroovyArray.ArrayEach<String> each, boolean useCached) {
+        String text = text(useCached);
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
+
+        String token = "\n";
+
+        if (text.contains(token)) {
+            String[] args = text.split(token);
+            for (String arg : args) {
+                each.each(arg);
+            }
+        } else {
+            each.each(text);
+        }
+    }
+
+
+    public synchronized Cached getCacheOrWait(String path, boolean forceCreated) {
+        if (mCached == null
+                || forceCreated) {
+            //create cached
+            byte[] bytes = FileIOUtils.readFile2BytesByChannel(path);
+            mCached = new Cached(bytes);
+        }
+        return mCached;
+    }
+
+
+    /**
+     * only support utf-8
+     */
+    private class Cached {
+        public final byte[] bytes;
+        public final String text;
+
+        private Cached(byte[] bytes) {
+            this.bytes = bytes;
+            this.text = new String(this.bytes);
+        }
+    }
+
+    //----------------------- static method -----------------------
 
     public static boolean isExists(File file) {
         return file != null
