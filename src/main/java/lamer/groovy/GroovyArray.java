@@ -73,7 +73,8 @@ public class GroovyArray {
         final int count = ds.size();
         StringBuilder builder = new StringBuilder(count * 2 - 1);
         for (int i = 0; i < count; i++) {
-            T data = ds.get(i);
+            int key = ds.keyAt(i);
+            T data = ds.get(key);
             if (data == null) {
                 continue;
             }
@@ -162,7 +163,8 @@ public class GroovyArray {
 
         List<T> array = newList(factory, ds.size());
         for (int i = 0; i < ds.size(); i++) {
-            T data = ds.get(i);
+            int key = ds.keyAt(i);
+            T data = ds.get(key);
 
             if (filter.grep(data)) {
                 array.add(data);
@@ -222,7 +224,7 @@ public class GroovyArray {
         if (isEmpty(ds)) {
             return null;
         } else {
-            return ds.get(0);
+            return ds.get(ds.keyAt(0));
         }
     }
 
@@ -230,7 +232,7 @@ public class GroovyArray {
         if (isEmpty(ds)) {
             return null;
         } else {
-            return ds.get(ds.size() - 1);
+            return ds.get(ds.keyAt(ds.size() - 1));
         }
     }
 
@@ -415,7 +417,8 @@ public class GroovyArray {
 
         int count = ds.size();
         for (int i = 0; i < count; i++) {
-            R data = ds.get(i);
+            int key = ds.keyAt(i);
+            R data = ds.get(key);
             resp = inject.plus(resp, data);
         }
         return resp;
@@ -494,7 +497,8 @@ public class GroovyArray {
 
         final int count = ds.size();
         for (int i = 0; i < count; i++) {
-            each.each(ds.get(i), i);
+            int key = ds.keyAt(i);
+            each.each(ds.get(key), i);
         }
     }
 
@@ -518,7 +522,8 @@ public class GroovyArray {
 
         final int count = ds.size();
         for (int i = count - 1; i >= 0; i--) {
-            each.each(ds.get(i), i);
+            int key = ds.keyAt(i);
+            each.each(ds.get(key), i);
         }
     }
 
@@ -604,7 +609,8 @@ public class GroovyArray {
 
         final int count = ds.size();
         for (int i = 0; i < count; i++) {
-            T data = ds.get(i);
+            int key = ds.keyAt(i);
+            T data = ds.get(key);
             boolean find = finder.find(data);
             if (find) {
                 return data;
@@ -620,7 +626,8 @@ public class GroovyArray {
 
         final int count = ds.size();
         for (int i = 0; i < count; i++) {
-            T data = ds.get(i);
+            int key = ds.keyAt(i);
+            T data = ds.get(key);
             boolean find = finder.find(data);
             if (find) {
                 return i;
@@ -827,7 +834,8 @@ public class GroovyArray {
 
         final int count = count(arrays);
         for (int i = 0; i < count; i++) {
-            T item = arrays.get(i);
+            int key = arrays.keyAt(i);
+            T item = arrays.get(key);
             cond = condition.condition(i, item);
             if (cond) {
                 break;
@@ -886,7 +894,8 @@ public class GroovyArray {
 
         final int count = count(arrays);
         for (int i = 0; i < count; i++) {
-            T item = arrays.get(i);
+            int key = arrays.keyAt(i);
+            T item = arrays.get(key);
             cond = condition.condition(i, item);
             if (!cond) {
                 break;
