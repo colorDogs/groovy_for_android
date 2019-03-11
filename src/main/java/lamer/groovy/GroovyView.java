@@ -6,11 +6,6 @@ import android.view.ViewParent;
 
 import java.util.List;
 
-/**
- * Created by lamer on 2018/12/30 01:31
- * <p>
- * mail: 157688302@qq.com
- */
 public class GroovyView {
 
     public static List<View> collectViews(View target) {

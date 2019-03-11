@@ -2,11 +2,6 @@ package lamer.groovy;
 
 import java.util.Set;
 
-/**
- * Created by lamer on 2018/12/30 01:31
- * <p>
- * mail: 157688302@qq.com
- */
 public class GroovySet {
 
     public static <T> void each(Set<T> ds, final SetEach<T> each) {

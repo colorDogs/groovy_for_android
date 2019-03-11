@@ -4,11 +4,6 @@ import android.text.TextUtils;
 
 import java.util.Map;
 
-/**
- * Created by lamer on 2018/12/30 01:31
- * <p>
- * mail: 157688302@qq.com
- */
 public class GroovyMap {
 
 
